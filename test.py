@@ -1,11 +1,14 @@
 import numpy as np
 import os
 import matplotlib.pyplot as plt
-#from scipy import stats
-import scipy.stats as stats
+from scipy import stats
+from scipy.stats import norm
+from scipy.stats import expon
+from scipy.stats import binom
 
 clear = lambda: os.system('cls')
 clear()
 
-ages = np.random.randint(18,90,500)
-print(stats.mode(ages))
+data = np.ones(100)
+data[70:] -= np.arange(30)
+print(data)
