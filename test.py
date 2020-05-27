@@ -1,8 +1,11 @@
-import numpy as numpy
+import numpy as np
 import os
+import matplotlib.pyplot as plt
+#from scipy import stats
+import scipy.stats as stats
 
 clear = lambda: os.system('cls')
 clear()
 
-for x in range(8,10):
-	print(x)
+ages = np.random.randint(18,90,500)
+print(stats.mode(ages))
