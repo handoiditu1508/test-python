@@ -9,17 +9,18 @@ from pylab import *
 from sklearn.metrics import r2_score
 import pandas as pd
 import statsmodels.api as sm
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.naive_bayes import MultinomialNB
 
 clear = lambda: os.system('cls')
 clear()
 
-df = pd.read_excel("http://cdn.sundog-soft.com/Udemy/DataScience/cars.xls")
-df["Model_ord"] = pd.Categorical(df.Model).codes
-x=df[["Mileage","Model_ord","Doors"]]
-y=df[["Price"]]
-
-X1=sm.add_constant(x)
-est=sm.OLS(y,X1).fit()
-
-#print(est.summary())
-print(y.groupby(df.Doors).mean())
+corpus = [
+'This is the first document.',
+'This document is the second document.',
+'And this is the third one.',
+'Is this the first document?',
+]
+vectorizer = CountVectorizer()
+x = vectorizer.fit_transform(corpus)
+print(x.toarray())
