@@ -11,16 +11,18 @@ import pandas as pd
 import statsmodels.api as sm
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import scale
 
 clear = lambda: os.system('cls')
 clear()
 
-corpus = [
-'This is the first document.',
-'This document is the second document.',
-'And this is the third one.',
-'Is this the first document?',
-]
-vectorizer = CountVectorizer()
-x = vectorizer.fit_transform(corpus)
-print(x.toarray())
+np.random.seed(2)
+a = []
+for i in range(5):
+	a.append([int(np.random.normal(500, 500)), int(np.random.normal(500, 500))])
+a=array(a)
+b = scale(a)
+plt.scatter(a[:,0],a[:,1],c="r")
+#plt.scatter(b[:,0],b[:,1],c="b")
+plt.show()
