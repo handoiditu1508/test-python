@@ -27,7 +27,9 @@ def createClusteredData(n, k):
 #create test data
 data = createClusteredData(100, 5)
 
-#list of each KMeans's summation of distances from data points to centroid
+#list of each KMeans's summation of
+#distances from data points to centroid
+#or within-cluster sum of squares (WCSS)
 totalVariations = []
 #store KMeans object for each K value
 kmeansStorage = []
