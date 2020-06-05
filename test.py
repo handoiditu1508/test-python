@@ -17,7 +17,10 @@ from sklearn.preprocessing import scale
 clear = lambda: os.system('cls')
 clear()
 
-x=[74.1, 74.77, 73.94, 73.61, 73.4]
-plt.scatter(x,[0]*len(x),c="b")
-plt.scatter(np.mean(x),0,c="r")
+x=[1, 1, 1, 3, 3, 4, 5, 6, 6, 8, 8, 8]
+y=[7, 6, 5, 3, 2, 1, 1, 2, 3, 5, 6, 7]
+plt.scatter(x, y, c="gray", marker="s")
+plt.scatter(3, 7.5, c="red", )
+plt.scatter(3, 4, c="green")
+plt.scatter(7.5, 4, c="blue")
 plt.show()
