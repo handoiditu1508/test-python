@@ -17,10 +17,6 @@ from sklearn.preprocessing import scale
 clear = lambda: os.system('cls')
 clear()
 
-x=[1, 1, 1, 3, 3, 4, 5, 6, 6, 8, 8, 8]
-y=[7, 6, 5, 3, 2, 1, 1, 2, 3, 5, 6, 7]
-plt.scatter(x, y, c="gray", marker="s")
-plt.scatter(3, 7.5, c="red", )
-plt.scatter(3, 4, c="green")
-plt.scatter(7.5, 4, c="blue")
-plt.show()
+a = np.array([[1,2,3],[3,4,5],[5,6,7]]) 
+b = np.array([[11,12,13],[13,14,15],[15,16,17]]) 
+print(np.dot(a[0],b[0]))
