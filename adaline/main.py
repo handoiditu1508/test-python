@@ -1,10 +1,11 @@
 import os
-import pandas as pd
-from sklearn import datasets
 import matplotlib.pyplot as plt
+from adaline import AdalineGD
+from sklearn import datasets
+import pandas as pd
 import numpy as np
-from perceptron import Perceptron
 from matplotlib.colors import ListedColormap
+from sklearn import preprocessing
 
 clear = lambda: os.system('cls')
 clear()
@@ -25,21 +26,12 @@ y = df.iloc[0:100, 4].replace(["setosa", "versicolor"],[-1,1]).values
 # extract sepal length and petal length
 X = df.iloc[0:100, [0, 2]].values
 
-"""plt.scatter(X[:50, 0], X[:50, 1],color='red', marker='o', label='setosa')
-plt.scatter(X[50:100, 0], X[50:100, 1], color='blue', marker='x', label='versicolor')
-plt.xlabel(df.columns[0])
-plt.ylabel(df.columns[2])
-plt.legend(loc="upper left")
-plt.show()"""
+# Create scaler
+scaler = preprocessing.StandardScaler()
+# Transform the feature
+X = scaler.fit_transform(X)
 
-"""ppn = Perceptron(eta=0.1, n_iter=10)
-ppn.fit(X, y)
-plt.plot(range(1, len(ppn.errors_) + 1), ppn.errors_, marker='o')
-plt.xlabel('Epochs')
-plt.ylabel('Number of updates')
-plt.show()"""
-
-def plot_decision_regions(X, y, classifier, resolution=0.02):
+def plot_decision_regions(X, y, classifier, resolution=0.02, plot=plt):
 	# setup marker generator and color map
 	markers = ('s', 'x', 'o', '^', 'v')
 	colors = ('red', 'blue', 'lightgreen', 'gray', 'cyan')
@@ -51,13 +43,12 @@ def plot_decision_regions(X, y, classifier, resolution=0.02):
 	xx1, xx2 = np.meshgrid(np.arange(x1_min, x1_max, resolution), np.arange(x2_min, x2_max, resolution))
 	Z = classifier.predict(np.array([xx1.ravel(), xx2.ravel()]).T)
 	Z = Z.reshape(xx1.shape)
-	plt.contourf(xx1, xx2, Z, alpha=0.3, cmap=cmap)
-	plt.xlim(xx1.min(), xx1.max())
-	plt.ylim(xx2.min(), xx2.max())
+	plot.contourf(xx1, xx2, Z, alpha=0.3, cmap=cmap)
+	plot.axis(xmin=xx1.min(),xmax=xx1.max(), ymin=xx2.min(), ymax=xx2.max())
 
 	# plot class examples
 	for idx, cl in enumerate(np.unique(y)):
-		plt.scatter(x=X[y == cl, 0],
+		plot.scatter(x=X[y == cl, 0],
 					y=X[y == cl, 1],
 					alpha=0.8,
 					c=colors[idx],
@@ -65,10 +56,17 @@ def plot_decision_regions(X, y, classifier, resolution=0.02):
 					label=cl,
 					edgecolor='black')
 
-ppn = Perceptron(eta=0.1, n_iter=10)
-ppn.fit(X, y)
-plot_decision_regions(X, y, classifier=ppn)
-plt.xlabel('sepal length [cm]')
-plt.ylabel('petal length [cm]')
-plt.legend(loc='upper left')
+fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(10, 4))
+ada1 = AdalineGD(n_iter=15, eta=0.01).fit(X, y)
+ax[0].plot(range(1, len(ada1.cost_) + 1), ada1.cost_, marker='o')
+ax[0].set_xlabel('Epochs')
+ax[0].set_ylabel('Sum-squared-error')
+ax[0].set_title('Adaline - Learning rate 0.01')
+
+plot_decision_regions(X, y, classifier=ada1, plot=ax[1])
+ax[1].set_title('Adaline - Gradient Descent')
+ax[1].set_xlabel('sepal length')
+ax[1].set_ylabel('petal length')
+ax[1].legend(loc='upper left')
+plt.tight_layout();
 plt.show()
