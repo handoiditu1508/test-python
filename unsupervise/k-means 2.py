@@ -1,5 +1,4 @@
 import os
-import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
@@ -13,16 +12,16 @@ def calc_distance(x1, y1, a, b, c):
 	return abs(a*x1 + b*y1 + c) / math.sqrt(a*a + b*b)
 
 def createClusteredData(n, k):
-    np.random.seed(10)
-    pointsPerCluster = float(n)/k
-    x=[]
-    for i in range(k):
-        incomeCentroid = np.random.uniform(20000.0, 200000.0)
-        ageCentroid = np.random.uniform(20.0, 70.0)
-        for j in range(int(pointsPerCluster)):
-            x.append([np.random.normal(incomeCentroid, 10000.0), np.random.normal(ageCentroid, 2.0)])
-    x = np.array(x)
-    return x
+	np.random.seed(10)
+	pointsPerCluster = int(n/k)
+	x = np.array([]).reshape(0,2)
+	for i in range(k):
+		incomeCentroid = np.random.uniform(20000.0, 200000.0)
+		ageCentroid = np.random.uniform(20.0, 70.0)
+		cluster = np.column_stack((np.random.normal(incomeCentroid, 10000.0, pointsPerCluster),
+								   np.random.normal(ageCentroid, 2.0, pointsPerCluster)))
+		x=np.concatenate((x, cluster))
+	return x
 
 #create test data
 data = createClusteredData(100, 5)
@@ -64,12 +63,13 @@ for i in range(len(Ks)):
 #final K value
 print(Ks[finalIndex])
 
-#uncomment to show K values and it's total variation
-#plt.plot(Ks, totalVariations, c="r")
-#plt.plot([x1, x2], [y1, y2], c="b")
-#plt.xlabel("K values")
-#plt.ylabel("Total variations")
+#show K values and it's total variation
+plt.plot(Ks, totalVariations, c="r")
+plt.plot([x1, x2], [y1, y2], c="b")
+plt.xlabel("K values")
+plt.ylabel("Total variations")
+plt.show()
 
-#uncomment to show clusters
-plt.scatter(data[:,0], data[:,1], c=kmeansStorage[finalIndex].labels_.astype(float))
+#show clusters
+plt.scatter(data[:,0], data[:,1], c=kmeansStorage[finalIndex].labels_)
 plt.show()
