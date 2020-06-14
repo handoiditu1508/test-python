@@ -1,8 +1,8 @@
 import os
-import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 import math
+from sklearn.datasets import make_blobs
 
 clear = lambda: os.system('cls')
 clear()
@@ -11,20 +11,8 @@ clear()
 def calc_distance(x1, y1, a, b, c):
 	return abs(a*x1 + b*y1 + c) / math.sqrt(a*a + b*b)
 
-def createClusteredData(n, k):
-	np.random.seed(10)
-	pointsPerCluster = int(n/k)
-	x = np.array([]).reshape(0,2)
-	for i in range(k):
-		incomeCentroid = np.random.uniform(20000.0, 200000.0)
-		ageCentroid = np.random.uniform(20.0, 70.0)
-		cluster = np.column_stack((np.random.normal(incomeCentroid, 10000.0, pointsPerCluster),
-								   np.random.normal(ageCentroid, 2.0, pointsPerCluster)))
-		x=np.concatenate((x, cluster))
-	return x
-
 #create test data
-data = createClusteredData(100, 5)
+data, target = make_blobs(n_samples = 100,n_features = 2,centers = 5,cluster_std = 0.5,random_state = 10)
 
 #list of each KMeans's summation of
 #distances from data points to centroid
@@ -56,6 +44,7 @@ maxDistance = 0.
 finalIndex = 0
 for i in range(len(Ks)):
 	d = calc_distance(Ks[i], totalVariations[i], a, b, c)
+	print(str(Ks[i])+": "+str(d))
 	if maxDistance < d:
 		maxDistance = d
 		finalIndex = i
@@ -72,4 +61,8 @@ plt.show()
 
 #show clusters
 plt.scatter(data[:,0], data[:,1], c=kmeansStorage[finalIndex].labels_)
+plt.show()
+
+#show true clusters
+plt.scatter(data[:,0], data[:,1], c=target)
 plt.show()
