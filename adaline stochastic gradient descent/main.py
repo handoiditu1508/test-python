@@ -1,11 +1,11 @@
 import os
-import matplotlib.pyplot as plt
-from adaline import AdalineGD
-from sklearn import datasets
 import pandas as pd
-import numpy as np
+from sklearn import datasets
+import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
+import numpy as np
 from sklearn import preprocessing
+from adalinesgd import AdalineSGD
 
 clear = lambda: os.system('cls')
 clear()
@@ -57,16 +57,17 @@ def plot_decision_regions(X, y, classifier, resolution=0.02, plot=plt):
 					edgecolor='black')
 
 fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(10, 4))
-ada1 = AdalineGD(n_iter=15, eta=0.01).fit(X, y)
-ax[0].plot(range(1, len(ada1.cost_) + 1), ada1.cost_, marker='o')
-ax[0].set_xlabel('Epochs')
-ax[0].set_ylabel('Sum-squared-error')
-ax[0].set_title('Adaline - Learning rate 0.01')
+ada_sgd = AdalineSGD(n_iter=15, eta=0.01, random_state=1).fit(X, y)
 
-plot_decision_regions(X, y, classifier=ada1, plot=ax[1])
-ax[1].set_title('Adaline - Gradient Descent')
-ax[1].set_xlabel('sepal length')
-ax[1].set_ylabel('petal length')
+ax[0].plot(range(1, len(ada_sgd.cost_) + 1), ada_sgd.cost_, marker='o')
+ax[0].set_xlabel('Epochs')
+ax[0].set_ylabel('Average Cost')
+
+plot_decision_regions(X, y, classifier=ada_sgd, plot=ax[1])
+ax[1].set_title('Adaline - Stochastic Gradient Descent')
+ax[1].set_xlabel('sepal length [standardized]')
+ax[1].set_ylabel('petal length [standardized]')
 ax[1].legend(loc='upper left')
-plt.tight_layout();
+
+plt.tight_layout()
 plt.show()
