@@ -4,6 +4,8 @@ import pandas as pd
 from sklearn import tree
 import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestClassifier
+from pydotplus import graph_from_dot_data
+from sklearn.tree import export_graphviz
 
 #clear console
 clear = lambda: os.system('cls')
@@ -34,5 +36,14 @@ clf = clf.fit(x,y)
 print(clf.predict([[1,100,50,0],[2,25,80,1]]))
 
 #display tree
-tree.plot_tree(clf)
-plt.show()
+#tree.plot_tree(clf)
+#plt.show()
+
+dot_data = export_graphviz(clf,
+						   filled=True,
+						   rounded=True,
+						   class_names=["Yes", "No"],
+						   feature_names=df.columns[:len(df.columns)-1],
+						   out_file=None)
+graph = graph_from_dot_data(dot_data)
+graph.write_png('tree.png')
