@@ -18,6 +18,7 @@ clear()
 df, y = datasets.load_breast_cancer(return_X_y=True, as_frame=True)
 
 X=df.values
+y=np.array(y)
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=y, random_state=1)
 
